@@ -17,3 +17,5 @@ Jumper Wires
 2 Tires
 1 360° Rotation Wheel
 1 10*20cm Sturdy Cardboard
+Hot Glue
+Soldering
