@@ -1,1 +1,46 @@
+Οι παρακάτω γραμμές κώδικα χρησμιποιούνται για να καλέσει το πρόγραμμα τις βιβλιοθήκες που χρησιμοποιούνται στο πρόγραμμα.
 
+from machine import Pin, PWM
+import utime
+
+Οι παρακάτω εντολές θέτουν πια Pins απο το rasberry pi αντιστοιχούν σε τι στο ρομπότ (εάν έχετε βάλει τα καλώδια σε διαφορετικά Pins απο αυτά γραμμένα θα χρειαστή να τα αλλάξετε στον κώδικα ώστε να αντιστοιχούν.)
+
+#Button
+button = Pin(15, Pin.IN, Pin.PULL_DOWN)
+
+#Sensors
+sensor1 = Pin(28, Pin.IN)
+sensor2 = Pin(27, Pin.IN)
+
+(Εδώ αρχικοποιήτε απλά ένα temporary value που χρησιμοποιήτε μετά)
+#Temp
+running = False
+
+Παρακάτω ο κώδικας θέτει τα Pins ως PWM ώστε να μπορούμε μετα να αλλάξουμε τις τιμές των μοτέρ και να ελλέγχξουμε την ταχίτητά τους.
+
+# -------------------------
+# PWM setup
+# -------------------------
+
+# Right motor pins
+right_forward = PWM(Pin(0))
+right_backward = PWM(Pin(1))
+
+# Left motor pins
+left_forward = PWM(Pin(2))
+left_backward = PWM(Pin(3))
+
+Παρακάτω θέτουμε το frequency των PWM signals που θα καθορίσει πώσο θα επιρεάζουν οι τιμές την ταχύτητα τον μοτέρ.
+
+# PWM frequency
+right_forward.freq(800)
+right_backward.freq(800)
+
+left_forward.freq(800)
+left_backward.freq(800)
+
+
+
+# Speed values
+SPEED = 46500
+TURN_SPEED = 31000
