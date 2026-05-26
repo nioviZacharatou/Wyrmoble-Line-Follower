@@ -12,7 +12,7 @@ button = Pin(15, Pin.IN, Pin.PULL_DOWN)
 sensor1 = Pin(28, Pin.IN)
 sensor2 = Pin(27, Pin.IN)
 
-(Εδώ αρχικοποιήτε απλά ένα temporary value που χρησιμοποιήτε μετά)
+(Εδώ αρχικοποιήτε απλά η τιμή της μεταβλητής running που όπως θα δούμε μετά καθορίζει το άμα ή όχι θα προχοράει το ρομπότ για να τρέξει μόνο αφότου πατήσουμε το κουμπί)
 #Temp
 running = False
 
@@ -39,8 +39,112 @@ right_backward.freq(800)
 left_forward.freq(800)
 left_backward.freq(800)
 
-
+Οι τιμές αυτών των μεταωλητών επιρεάζουν απευθείας την ταχύτητα του ρομπότ και την ταχύτητα του οταν γυρνάει.
 
 # Speed values
 SPEED = 46500
 TURN_SPEED = 31000
+
+
+Παρακάτω θέτουμε τις συναρτήσεις που καθορίζουν τι θα κάνει το κάθε μοτέρ ανάλογα με το πιά καλεθεί.
+Η stop καλείτε για να σταματήσει και τα δύο μοτέρ με αποτέλεσμα να σταματήσει το ρομπότ τελείως.
+Η forward καλείτε για να πάει το ρομπότ ευθεία κρατόντας σταθερή την τιμή και των δύο μοτέρ.
+Η backward καλείτε για να πάνε και τα δύο μοτέρ ανάποδα σε περίπτοση που θέλουμε το ρομπότ να πάει προς τα πίσο.
+Η turn_left κάνει το δεξιά μοτέρ να πάει μπρος και το αριστερό μοτέρ να πάει ανάποδα με αποτέλεσμα να γυρίσει το ρομπότ στα αριστερά
+Η turn_right κάνει το αριστερό μοτέρ να πάει μπρος και το δεξί μοτέρ να πάει ανάποδα με αποτέλεσμα να γυρίσει το ρομπότ στα δεξιά
+Note : (Κάθε μια απο αυτές τισ συναρτήσεις καλέι την stop στην αρχή για να αρχικοποιηθούν οι τιμές πριν τρέξει η συνάρτηση και για να δώσει στο ρομπότ χρόνο να ανταποκριθεί)
+
+# -------------------------
+# Motor functions
+# -------------------------
+
+def stop():
+    right_forward.duty_u16(0)
+    right_backward.duty_u16(0)
+
+    left_forward.duty_u16(0)
+    left_backward.duty_u16(0)
+
+
+def forward():
+    stop()
+
+    # Right motor forward
+    right_backward.duty_u16(SPEED)
+
+    # Left motor forward
+    left_forward.duty_u16(SPEED)
+
+
+def backward():
+    stop()
+
+    # Right motor backward
+    right_forward.duty_u16(SPEED)
+
+    # Left motor backward
+    left_backward.duty_u16(SPEED)
+
+
+def turn_left():
+    stop()
+
+    # Right wheel forward
+    right_backward.duty_u16(TURN_SPEED + 200)
+
+    # Left wheel backward
+    left_backward.duty_u16(TURN_SPEED)
+
+
+def turn_right():
+    stop()
+
+    # Right wheel backward
+    right_forward.duty_u16(TURN_SPEED)
+
+    # Left wheel forward
+    left_forward.duty_u16(TURN_SPEED + 200)
+
+
+Steph help idk how to explain the fuckass button idk how you made it work actually. Anyway you explain this part. You just gotta say that based on the output of the sensors you decide which of the above functiosn it calls
+
+while True:
+    s1 = sensor1.value()
+    s2 = sensor2.value()
+    if button.value() == 1:
+        running = not running
+        stop()
+        utime.sleep(0.3)
+
+    
+  
+    if running:
+        while s1 == 0 and s2 == 0:
+            forward()
+            s1 = sensor1.value()
+            s2 = sensor2.value()
+            TURN_SPEED = 31000
+            
+        while s1 == 1 and s2 == 0:
+            turn_left()
+            s1 = sensor1.value()
+            s2 = sensor2.value()
+            TURN_SPEED += 300
+            utime.sleep(0.01)
+
+        while s1 == 0 and s2 == 1:
+            turn_right()
+            s1 = sensor1.value()
+            s2 = sensor2.value()
+            TURN_SPEED += 300
+            utime.sleep(0.01)
+
+        while s1 and s2:
+            stop()
+            running = not running
+            s1 = sensor1.value()
+            s2 = sensor2.value()
+            utime.sleep(1)
+
+    utime.sleep(0.02)
+
