@@ -16,7 +16,7 @@
   ~50 Pin Header Male 
   2 Tires
   1 360° Rotation Wheel
-  1 10*20cm Sturdy Cardboard
+  1 200cm² Sturdy Cardboard
   Hot Glue
   Soldering Iron
-  
+
